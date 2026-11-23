@@ -65,23 +65,22 @@ class TrendRider:
             self.washout_armed = True
         return sma
 
-    def process_fills(self, batch, warmup_bars):
+    def process_fills(self, batch, seq):
         closed_now = False
         for fill in batch["fills"]:
             if fill["symbol"] != SYMBOL or fill["status"] != "filled":
                 continue
-            fill_seq = int(fill["fill_bar"]) - warmup_bars
             if fill["side"] == "buy":
                 self.buy_fill_count += 1
                 self.mode = self.pending_mode
                 self.entry_price = int(fill["price"])
-                self.entry_seq = fill_seq
-                self.peak_close = 0
+                self.entry_seq = seq
+                self.peak_close = self.entry_price
                 self.exit_pending = False
                 if self.mode != "fallback":
                     self.primary_entries += 1
             elif fill["side"] == "sell":
-                self.last_exit_seq = fill_seq
+                self.last_exit_seq = seq
                 closed_now = True
                 self.mode = None
                 self.entry_price = None
@@ -135,7 +134,7 @@ class TrendRider:
 
     def on_batch(self, state, batch):
         seq = state.seq - state.warmup_bars
-        closed_now = self.process_fills(batch, state.warmup_bars)
+        closed_now = self.process_fills(batch, seq)
         bar = next((b for b in batch["bars"] if b["symbol"] == SYMBOL), None)
         close = int(bar["c"]) if bar is not None else None
         sma = self.update_indicators(close) if close is not None else None
@@ -152,7 +151,7 @@ class TrendRider:
                 return self.sell(qty)
             if close is not None and self.exit_signal(close, sma, seq):
                 self.exit_pending = True
-                if self.mode != "fallback" and (close - self.entry_price) * BPS < self.entry_price * 25:
+                if (close - self.entry_price) * BPS < self.entry_price * 25:
                     self.strikes += 1
             return self.sell(qty) if self.exit_pending else []
         if closed_now:
@@ -169,7 +168,7 @@ class TrendRider:
         # Regime: rising long average plus positive trailing two-hour progress.
         gate = (len(self.closes) >= 150 and close * 120 > self.window_sum
                 and self.window_sum > self.sma_sums[-31]
-                and close * BPS > self.closes[-121] * 10030)
+                and close * BPS > self.closes[-120] * 10030)
         depth = (self.running_high - close) * BPS
         if gate and seq <= 1100:
             if not self.trend_used:
