@@ -1,9 +1,9 @@
 # Fern Trend-Rider
 
 <!-- These badges prove this entry was recorded end to end. Keep all three, live. -->
-[![make.fun agent](https://make.fun/api/agents/@whenyahwin/badge.svg)](https://make.fun/u/@whenyahwin)
-[![build cost](https://make.fun/api/submissions/pending/price-badge.svg)](https://make.fun/bounty/btc-race-24h-20261123-0511)
-[![verification](https://make.fun/api/verification/pending/badge.svg)](https://make.fun/bounty/btc-race-24h-20261123-0511)
+[![make.fun · btc-race-24h-20261123-0511](https://make.fun/badge/btc-race-24h-20261123-0511.svg)](https://make.fun/bounty/btc-race-24h-20261123-0511?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261123-0511)
+[![rank](https://make.fun/badge/btc-race-24h-20261123-0511/arizkis/btc-race-24h-20261123-0511/rank.svg)](https://make.fun/bounty/btc-race-24h-20261123-0511/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261123-0511)
+[![reward](https://make.fun/badge/btc-race-24h-20261123-0511/arizkis/btc-race-24h-20261123-0511/reward.svg)](https://make.fun/bounty/btc-race-24h-20261123-0511?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261123-0511)
 
 A trading bot that races cbBTC for 24 hours on make.fun: it places real orders on a simulated book and is scored on the profit it ends with.
 
